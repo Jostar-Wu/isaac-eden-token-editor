@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\IsaacEdenTokenEditor.Core\IsaacEdenTokenEditor.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>IsaacEdenTokenEditor</AssemblyName>
+    <RootNamespace>IsaacEdenTokenEditor.App</RootNamespace>
+    <ApplicationIcon Condition="Exists('app.ico')">app.ico</ApplicationIcon>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <Version>1.0.0</Version>
+    <Product>伊甸次数修改器</Product>
+    <Authors>Isaac Eden Token Editor contributors</Authors>
+    <Description>离线修改《以撒的结合》Repentance / Repentance+ 伊甸次数。</Description>
+  </PropertyGroup>
+
+</Project>

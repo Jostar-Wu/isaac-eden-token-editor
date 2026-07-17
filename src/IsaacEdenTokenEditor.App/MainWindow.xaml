@@ -1,0 +1,103 @@
+<Window x:Class="IsaacEdenTokenEditor.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="伊甸次数修改器" Height="720" Width="980" MinHeight="640" MinWidth="820"
+        WindowStartupLocation="CenterScreen" Background="#F5F7FB"
+        AllowDrop="True" Drop="Window_Drop">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Microsoft YaHei UI"/>
+        </Style>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#DCE2EC"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#27314D" Padding="24,18">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock Text="伊甸次数修改器" Foreground="White" FontSize="25" FontWeight="SemiBold"/>
+                    <TextBlock Text="支持 Repentance 与 Repentance+ · 存档只在本机处理" Foreground="#CFD7EB" Margin="0,5,0,0"/>
+                </StackPanel>
+                <Border DockPanel.Dock="Right" Background="#36415F" CornerRadius="14" Padding="12,6" VerticalAlignment="Center">
+                    <TextBlock x:Name="GameStateText" Text="正在检查游戏状态…" Foreground="White"/>
+                </Border>
+            </DockPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="24">
+                <GroupBox Header="1. 选择存档">
+                    <StackPanel>
+                        <TextBlock Text="推荐自动扫描 Steam；也可以选择或拖入一个 persistentgamedata .dat 文件。" Foreground="#586174" Margin="0,0,0,14"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="ScanButton" Content="自动扫描 Steam 存档" Click="ScanButton_Click" Background="#4D6FE8" Foreground="White"/>
+                            <Button Content="手动选择 .dat 文件" Click="ManualButton_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="2. 扫描结果">
+                    <Grid>
+                        <DataGrid x:Name="SaveGrid" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
+                                  SelectionChanged="SaveGrid_SelectionChanged" MinHeight="165" HeadersVisibility="Column">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Steam 用户" Binding="{Binding SteamUserId}" Width="110"/>
+                                <DataGridTextColumn Header="存档位" Binding="{Binding Slot}" Width="70"/>
+                                <DataGridTextColumn Header="版本" Binding="{Binding VersionText}" Width="125"/>
+                                <DataGridTextColumn Header="当前次数" Binding="{Binding Tokens}" Width="100"/>
+                                <DataGridTextColumn Header="文件" Binding="{Binding Path}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="3. 修改伊甸次数">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="SelectedFileText" Text="请先扫描或选择存档。" TextWrapping="Wrap" Foreground="#586174"/>
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,14,0,14">
+                            <TextBlock Text="目标次数：" VerticalAlignment="Center" FontSize="15"/>
+                            <TextBox x:Name="TokenTextBox" Text="100000" Width="180" Padding="10,8" FontSize="15"/>
+                            <Button Content="填入 100000" Margin="10,0,0,0" Click="PresetButton_Click"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                            <Button x:Name="ExecuteButton" Content="开始修改" IsEnabled="False" Click="ExecuteButton_Click" Background="#2D9A62" Foreground="White"/>
+                            <Button x:Name="OpenResultButton" Content="打开结果文件夹" IsEnabled="False" Click="OpenResultButton_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <Border Background="#FFF7E8" BorderBrush="#F0D8A8" BorderThickness="1" CornerRadius="6" Padding="14">
+                    <TextBlock TextWrapping="Wrap" Foreground="#6D5528">
+                        自动模式会先备份到“文档\IsaacEdenEditorBackups”，再写回并复核；游戏运行时会拒绝写回。手动模式只导出新文件，需要你自行替换原同名文件。
+                    </TextBlock>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" Background="White" BorderBrush="#DCE2EC" BorderThickness="0,1,0,0" Padding="24,12">
+            <TextBlock x:Name="StatusText" Text="就绪。" Foreground="#39445C" TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</Window>

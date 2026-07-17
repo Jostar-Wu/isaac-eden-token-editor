@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet test -c Release
+      - run: dotnet publish src/IsaacEdenTokenEditor.App -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish
+      - name: Generate SHA-256
+        shell: pwsh
+        run: (Get-FileHash publish/IsaacEdenTokenEditor.exe -Algorithm SHA256).Hash + '  IsaacEdenTokenEditor.exe' | Set-Content publish/SHA256.txt
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            publish/IsaacEdenTokenEditor.exe
+            publish/SHA256.txt
+          generate_release_notes: true

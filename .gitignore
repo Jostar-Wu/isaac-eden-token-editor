@@ -1,0 +1,11 @@
+bin/
+obj/
+.vs/
+.idea/
+.dotnet-home/
+artifacts/
+publish/
+*.user
+*.suo
+*.dat
+!.github/**/*.dat
